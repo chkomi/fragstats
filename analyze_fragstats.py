@@ -128,9 +128,13 @@ def analyze_class_metrics():
             for type_val, type_rows in type_groups.items():
                 results.append(f"\n  타입: {type_val}")
 
-                # 주요 지표들 출력
-                key_metrics = ['CA', 'PLAND', 'NP', 'PD', 'LPI', 'ED', 'AREA_MN',
-                             'TCA', 'CPLAND', 'CLUMPY', 'PLADJ', 'COHESION', 'AI']
+                # 모든 지표 출력 (31개)
+                key_metrics = ['CA', 'PLAND', 'NP', 'PD', 'LPI', 'TE', 'ED',
+                             'AREA_MN', 'AREA_AM', 'AREA_MD', 'AREA_CV',
+                             'GYRATE_MN', 'GYRATE_AM', 'GYRATE_MD', 'GYRATE_CV',
+                             'SHAPE_MN', 'SHAPE_AM', 'FRAC_MN', 'FRAC_AM', 'PARA_MN',
+                             'TCA', 'CPLAND', 'NDCA', 'DCAD', 'CORE_MN', 'CAI_MN',
+                             'CLUMPY', 'PLADJ', 'IJI', 'COHESION', 'AI']
 
                 if type_rows:
                     row = type_rows[0]  # Class 레벨은 각 타입당 1개 행
@@ -172,8 +176,12 @@ def analyze_class_metrics():
                 results.append(f"\n{'지표':15s} {'농지적합':>15s} {'비적합':>15s} {'차이':>15s} {'차이율(%)':>15s}")
                 results.append("-" * 80)
 
-                key_metrics = ['CA', 'PLAND', 'NP', 'PD', 'LPI', 'ED', 'AREA_MN',
-                             'TCA', 'CPLAND', 'CLUMPY', 'PLADJ', 'COHESION', 'AI']
+                key_metrics = ['CA', 'PLAND', 'NP', 'PD', 'LPI', 'TE', 'ED',
+                             'AREA_MN', 'AREA_AM', 'AREA_MD', 'AREA_CV',
+                             'GYRATE_MN', 'GYRATE_AM', 'GYRATE_MD', 'GYRATE_CV',
+                             'SHAPE_MN', 'SHAPE_AM', 'FRAC_MN', 'FRAC_AM', 'PARA_MN',
+                             'TCA', 'CPLAND', 'NDCA', 'DCAD', 'CORE_MN', 'CAI_MN',
+                             'CLUMPY', 'PLADJ', 'IJI', 'COHESION', 'AI']
 
                 for metric in key_metrics:
                     if metric in suitable and metric in unsuitable:
