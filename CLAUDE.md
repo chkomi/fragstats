@@ -41,9 +41,34 @@ This generates `FRAGSTATS_분석결과_종합보고서.txt` containing:
 ### Dependencies
 The script uses **only Python standard library** (no pandas/numpy). This is intentional to avoid dependency issues.
 
-## Code Architecture
+## Entropy Weight Model
 
-### Main Analysis Functions
+A new, objective evaluation model has been introduced to calculate the importance of different landscape metrics.
+
+### Running the Model
+```bash
+python3 entropy_weight_model.py
+```
+This script reads the class-level metrics from `FRAGSTATS_분석결과_종합보고서.txt`, applies the entropy weight method, and generates two key files:
+1.  `엔트로피가중치_평가모델_결과.txt`: Contains the calculated weights for each layer (pibok, nongeup, infra, toyang) and each of the 31 class-level metrics. It also includes the comprehensive scores and 5-tier ratings for each data point (Naju/Hwasun).
+2.  `엔트로피가중치법_방법론_설명서.txt`: A detailed document explaining the theory, calculation steps, and policy application of the entropy weight method.
+
+### Code Architecture
+
+**`entropy_weight_model.py`**
+- **`load_class_metrics_from_report(report_path)`**: Parses the main analysis report to extract the raw data for the 8 data points (Naju/Hwasun x 4 layers).
+- **`calculate_entropy_weights(data)`**: Implements the 6-step entropy weight calculation process:
+    1.  Normalization of the data matrix.
+    2.  Calculation of entropy for each indicator.
+    3.  Calculation of the degree of dispersion.
+    4.  Calculation of the weight for each indicator.
+    5.  Calculation of comprehensive scores for each data point.
+    6.  Classification into a 5-tier rating system (Absolute Preservation to Priority De-designation).
+- **`save_results(weights, scores, ratings)`**: Saves the final weights, scores, and ratings into `엔트로피가중치_평가모델_결과.txt`.
+
+This model provides an objective, data-driven method for evaluating agricultural promotion areas, removing subjectivity from the weighting process.
+
+## Main Analysis Functions
 
 **`analyze_class_metrics()`**
 - Reads 4 category files (infra, toyang, nongeup, pibok)
