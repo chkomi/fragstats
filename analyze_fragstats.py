@@ -231,9 +231,10 @@ def analyze_land_metrics():
             results.append(f"\n지역: {loc}")
             results.append("-" * 80)
 
-            # 모든 지표 출력
-            key_metrics = ['TA', 'NP', 'PD', 'LPI', 'ED', 'TCA', 'CONTAG',
-                         'COHESION', 'DIVISION', 'MESH', 'SPLIT', 'SHDI', 'SIDI', 'SHEI', 'AI']
+            # 모든 지표 출력 (19개)
+            key_metrics = ['TA', 'NP', 'PD', 'LPI', 'TE', 'ED', 'TCA', 'CONTAG',
+                         'COHESION', 'DIVISION', 'MESH', 'SPLIT', 'PR', 'PRD',
+                         'SHDI', 'SIDI', 'MSIDI', 'SHEI', 'AI']
 
             for metric in key_metrics:
                 if metric in row:
@@ -262,8 +263,9 @@ def analyze_land_metrics():
             results.append(f"\n{'지표':15s} {'화순':>15s} {'나주':>15s} {'차이':>15s} {'차이율(%)':>15s}")
             results.append("-" * 80)
 
-            key_metrics = ['TA', 'NP', 'PD', 'LPI', 'ED', 'TCA', 'CONTAG',
-                         'COHESION', 'DIVISION', 'MESH', 'SPLIT', 'SHDI', 'SIDI', 'SHEI', 'AI']
+            key_metrics = ['TA', 'NP', 'PD', 'LPI', 'TE', 'ED', 'TCA', 'CONTAG',
+                         'COHESION', 'DIVISION', 'MESH', 'SPLIT', 'PR', 'PRD',
+                         'SHDI', 'SIDI', 'MSIDI', 'SHEI', 'AI']
 
             for metric in key_metrics:
                 if metric in hwasun_data and metric in naju_data:
