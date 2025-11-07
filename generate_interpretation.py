@@ -357,6 +357,8 @@ def generate_comprehensive_interpretation():
     # 1-1. INFRA 카테고리
     results.append("\n1-1. 기반시설 수혜도 분석 (INFRA)")
     results.append("-" * 80)
+    results.append("※ 기반시설 수혜 농지(giban_benefited)만 분석 대상")
+    results.append("")
 
     infra_file = work_dir / "infra_class.txt"
     infra_data = read_fragstats_file(infra_file)
@@ -364,12 +366,16 @@ def generate_comprehensive_interpretation():
         for row in infra_data['data']:
             loc = row.get('LOC', '')
             type_val = row.get('TYPE', '')
-            region = "화순" if "hwasun" in loc else "나주"
-            results.append(interpret_infra_class(region, row, type_val))
+            # giban_benefited만 분석
+            if 'benefited' in type_val and 'not' not in type_val:
+                region = "화순" if "hwasun" in loc else "나주"
+                results.append(interpret_infra_class(region, row, type_val))
 
     # 1-2. TOYANG 카테고리
     results.append("\n1-2. 토양 등급별 분석 (TOYANG)")
     results.append("-" * 80)
+    results.append("※ 1등급 토양(cls_1)만 분석 대상")
+    results.append("")
 
     toyang_file = work_dir / "toyang_class.txt"
     toyang_data = read_fragstats_file(toyang_file)
@@ -377,12 +383,16 @@ def generate_comprehensive_interpretation():
         for row in toyang_data['data']:
             loc = row.get('LOC', '')
             type_val = row.get('TYPE', '')
-            region = "화순" if "hwasun" in loc else "나주"
-            results.append(interpret_toyang_class(region, row, type_val))
+            # cls_1만 분석
+            if 'cls_1' in type_val:
+                region = "화순" if "hwasun" in loc else "나주"
+                results.append(interpret_toyang_class(region, row, type_val))
 
     # 1-3. NONGEUP 카테고리 (토양과 유사한 해석)
     results.append("\n1-3. 농업용지 등급별 분석 (NONGEUP)")
     results.append("-" * 80)
+    results.append("※ 1등급 농업용지(cls_1)만 분석 대상")
+    results.append("")
 
     nongeup_file = work_dir / "nongeup_class.txt"
     nongeup_data = read_fragstats_file(nongeup_file)
@@ -390,13 +400,17 @@ def generate_comprehensive_interpretation():
         for row in nongeup_data['data']:
             loc = row.get('LOC', '')
             type_val = row.get('TYPE', '')
-            region = "화순" if "hwasun" in loc else "나주"
-            # nongeup도 토양과 유사하게 해석
-            results.append(interpret_toyang_class(region, row, type_val).replace("토양", "농업용지").replace("TOYANG", "NONGEUP"))
+            # cls_1만 분석
+            if 'cls_1' in type_val:
+                region = "화순" if "hwasun" in loc else "나주"
+                # nongeup도 토양과 유사하게 해석
+                results.append(interpret_toyang_class(region, row, type_val).replace("토양", "농업용지").replace("TOYANG", "NONGEUP"))
 
     # 1-4. PIBOK 카테고리
     results.append("\n1-4. 토지피복 등급별 분석 (PIBOK)")
     results.append("-" * 80)
+    results.append("※ 1등급 토지피복(cls_1)만 분석 대상")
+    results.append("")
 
     pibok_file = work_dir / "pibok_class.txt"
     pibok_data = read_fragstats_file(pibok_file)
@@ -404,8 +418,10 @@ def generate_comprehensive_interpretation():
         for row in pibok_data['data']:
             loc = row.get('LOC', '')
             type_val = row.get('TYPE', '')
-            region = "화순" if "hwasun" in loc else "나주"
-            results.append(interpret_toyang_class(region, row, type_val).replace("토양", "토지피복").replace("TOYANG", "PIBOK").replace("우량농지", "우량피복지"))
+            # cls_1만 분석
+            if 'cls_1' in type_val:
+                region = "화순" if "hwasun" in loc else "나주"
+                results.append(interpret_toyang_class(region, row, type_val).replace("토양", "토지피복").replace("TOYANG", "PIBOK").replace("우량농지", "우량피복지"))
 
     # LAND 레벨 해석
     results.append("\n" + "=" * 80)
@@ -433,20 +449,40 @@ def generate_comprehensive_interpretation():
     results.append("-" * 80)
     results.append("")
 
-    results.append("【화순 지역】")
-    results.append("- 기반시설 미수혜 농지 비율이 매우 높음 (95.9%)")
-    results.append("- 토양 등급은 9등급(저위생산)이 74.2%로 우세")
-    results.append("- 경관이 상대적으로 단순하고 집중된 형태 (CONTAG 높음)")
-    results.append("- 대규모 농지 패치가 존재하나 품질은 낮은 편")
-    results.append("→ 기반시설 투자와 토양개량이 필요한 지역")
+    results.append("【화순 지역 - 농지 적합 타입】")
+    results.append("- 기반시설 수혜 농지: 경관의 4.1%로 매우 낮음")
+    results.append("  → 극심한 파편화 (812개 패치), 평균 4.02ha로 소규모")
+    results.append("  → 농지 집단화 사업 및 기반시설 확충 시급")
+    results.append("- 1등급 토양: 경관의 25.8%로 적정 수준")
+    results.append("  → 우량농지 산재 (452개 패치), 집단화 필요")
+    results.append("  → 집적도 높음 (AI=93.1)")
+    results.append("- 1등급 농업용지: 경관의 15.5%")
+    results.append("  → 파편화 상태 (405개 패치)")
+    results.append("- 1등급 토지피복: 경관의 11.6%")
+    results.append("  → 매우 심각한 파편화 (14,933개 패치)")
+    results.append("")
+    results.append("【화순 종합 평가】")
+    results.append("✓ 우량농지(토양 1등급)는 보전 가치 있으나 파편화 심각")
+    results.append("✗ 기반시설 수혜 농지는 극소량으로 집단화·정비 시급")
+    results.append("→ 우량농지 중심 집단화 사업 우선 추진 필요")
     results.append("")
 
-    results.append("【나주 지역】")
-    results.append("- 기반시설 수혜 농지 비율이 상대적으로 높음 (19.8%)")
-    results.append("- 토양 등급은 1등급과 9등급이 혼재 (29.0% vs 71.0%)")
-    results.append("- 경관이 복잡하고 파편화된 형태 (CONTAG 낮음)")
-    results.append("- 패치 밀도가 매우 높아 극심한 파편화")
-    results.append("→ 농지 정비 및 집단화 사업이 시급한 지역")
+    results.append("【나주 지역 - 농지 적합 타입】")
+    results.append("- 기반시설 수혜 농지: 경관의 19.8%로 화순보다 양호")
+    results.append("  → 파편화 심각 (2,209개 패치), 평균 5.42ha")
+    results.append("  → 농지 정비사업 필요")
+    results.append("- 1등급 토양: 경관의 29.0%로 우수")
+    results.append("  → 파편화 매우 심각 (749개 패치), 평균 23.49ha")
+    results.append("  → 집적도 높음 (AI=94.1)")
+    results.append("- 1등급 농업용지: 경관의 37.3%로 높음")
+    results.append("  → 파편화 (356개 패치), 평균 63.29ha로 상대적으로 양호")
+    results.append("- 1등급 토지피복: 경관의 35.7%")
+    results.append("  → 심각한 파편화 (12,068개 패치)")
+    results.append("")
+    results.append("【나주 종합 평가】")
+    results.append("✓ 우량농지 비율이 높아 농업생산성 우수")
+    results.append("✗ 극심한 파편화가 최대 약점")
+    results.append("→ 농지 교환·분합 사업을 통한 집단화가 최우선 과제")
     results.append("")
 
     # 최종 권고사항
@@ -484,67 +520,95 @@ def generate_comprehensive_interpretation():
     results.append("✓ 요구사항: 농지 교환·분합, 집단화 사업 선행")
     results.append("")
 
-    results.append("\n4-2. 지정해제 검토 기준")
+    results.append("\n4-2. 지정해제 검토 기준 (농지 적합 타입 내 차등화)")
     results.append("-" * 80)
     results.append("")
     results.append("【해제 우선 검토 대상】")
-    results.append("✗ 조건:")
-    results.append("  - 9등급 토양 + 기반시설 미수혜")
-    results.append("  - PLAND < 5% (농지 비율 매우 낮음)")
-    results.append("  - NP > 1000 AND AREA_MN < 5ha (극심한 파편화)")
+    results.append("✗ 조건: (농지 적합 타입이지만 다음 조건 충족 시)")
+    results.append("  - PLAND < 5% (경관 내 비율 극히 낮음)")
+    results.append("  - NP > 2000 AND AREA_MN < 3ha (극심한 소규모 파편화)")
     results.append("  - ED > 80 (가장자리 밀도 높음)")
-    results.append("  - DIVISION > 0.6 (경관 고도 분할)")
-    results.append("✗ 사유: 농업생산성 매우 낮고 정비 비용 과다")
-    results.append("✗ 대안: 타 용도 전환 또는 자연환경 보전")
+    results.append("  - LPI < 0.3 (최대 패치도 미미)")
+    results.append("  - AI < 85 (낮은 집적도)")
+    results.append("✗ 사유: 우량 농지이지만 극도로 파편화되어 정비 비용 과다")
+    results.append("✗ 판단: 농지 정비사업 효과 분석 후 결정")
+    results.append("       - 정비 가능: 집단화 후 보전")
+    results.append("       - 정비 곤란: 해제 검토")
     results.append("")
 
-    results.append("【해제 검토 대상】")
+    results.append("【조건부 해제 검토 대상】")
     results.append("△ 조건:")
-    results.append("  - 9등급 토양 우세 (PLAND > 70%)")
-    results.append("  - 기반시설 미수혜 농지가 소규모 분산")
-    results.append("  - 경관 복잡도 매우 높음 (CONTAG < 40)")
-    results.append("△ 사유: 농업적 이용가치 낮음")
-    results.append("△ 대안: 농지 정비 투자 대비 효과 검토 후 결정")
+    results.append("  - PLAND < 10% (경관 내 비율 낮음)")
+    results.append("  - NP > 1000 AND AREA_MN < 5ha (심각한 파편화)")
+    results.append("  - CORE_MN < 3ha (핵심 농지 면적 매우 작음)")
+    results.append("  - DIVISION > 0.5 (경관 분할 심각)")
+    results.append("△ 사유: 우량 농지이나 분산도 높아 영농 효율성 저하")
+    results.append("△ 판단: 주변 여건 및 집단화 가능성 검토 후 결정")
     results.append("")
 
-    results.append("\n4-3. 정책 제안")
+    results.append("\n4-3. 정책 제안 (농지 적합 타입 중심)")
     results.append("-" * 80)
     results.append("")
-    results.append("1. 농지 등급별 차등 관리")
-    results.append("   - 1등급 토양: 절대보전, 개발 불허")
-    results.append("   - 9등급 토양: 토양개량 투자 또는 용도 전환 검토")
+    results.append("1. 우량 농지 차등 관리 체계")
+    results.append("   - 1등급 토양 + 기반시설 수혜 + 집단화: 절대보전")
+    results.append("   - 1등급 토양이지만 파편화: 집단화 사업 우선")
+    results.append("   - 기반시설 수혜이지만 분산: 정비 후 보전")
+    results.append("   - 극도로 파편화된 소규모 농지: 집단화 가능성 검토 후 결정")
     results.append("")
-    results.append("2. 기반시설 투자 우선순위")
-    results.append("   - 대규모 미수혜 농지 집중 지역에 우선 투자")
-    results.append("   - ROI 분석을 통한 투자 효율성 평가")
+    results.append("2. 농지 집단화 사업 추진 전략")
+    results.append("   - 우선순위 1: 1등급 토양 집중 지역 (PLAND > 25%)")
+    results.append("   - 우선순위 2: 기반시설 수혜 농지 밀집 지역")
+    results.append("   - 교환·분합을 통한 필지 통합")
+    results.append("   - 집단화 효과가 큰 지역부터 단계적 추진")
     results.append("")
-    results.append("3. 농지 정비 사업")
-    results.append("   - 우량농지이나 파편화된 지역: 교환·분합 사업")
-    results.append("   - 집단화 가능 지역: 경지 정리 및 기반시설 확충")
+    results.append("3. 기반시설 확충 전략")
+    results.append("   - 1등급 토양 지역 우선 투자")
+    results.append("   - 집단화된 농지에 기반시설 집중 투자")
+    results.append("   - 투자 효과 분석 및 우선순위 설정")
     results.append("")
-    results.append("4. 단계적 접근")
+    results.append("4. 단계적 의사결정 프로세스")
     results.append("   - 1단계: 절대보전 구역 지정 (1순위 농지)")
-    results.append("   - 2단계: 정비 대상 구역 선정 및 사업 추진 (3순위)")
-    results.append("   - 3단계: 정비 효과 평가 후 보전/해제 최종 결정")
-    results.append("   - 4단계: 해제 검토 구역 타당성 분석 및 주민 의견 수렴")
+    results.append("   - 2단계: 집단화 가능 구역 선정 및 사업 추진")
+    results.append("   - 3단계: 집단화 사업 완료 후 재평가")
+    results.append("   - 4단계: 집단화 불가능 또는 비효율적 지역 해제 검토")
+    results.append("   - 5단계: 주민 의견 수렴 및 최종 결정")
     results.append("")
 
-    results.append("\n4-4. 지역별 맞춤 전략")
+    results.append("\n4-4. 지역별 맞춤 전략 (농지 적합 타입 중심)")
     results.append("-" * 80)
     results.append("")
     results.append("【화순 지역 전략】")
-    results.append("- 현황: 대규모 농지이나 기반시설 부족, 토양 등급 낮음")
-    results.append("- 전략:")
-    results.append("  1) 대규모 기반시설 투자 타당성 검토")
-    results.append("  2) 토양개량 사업 병행 추진")
-    results.append("  3) 투자 효과 낮을 시 일부 용도 전환 검토")
+    results.append("- 현황 분석:")
+    results.append("  • 1등급 토양: 25.8% (적정), 집적도 높음 (AI=93.1)")
+    results.append("  • 기반시설 수혜: 4.1% (매우 낮음), 극심한 파편화")
+    results.append("  • 1등급 농업용지: 15.5%, 1등급 피복: 11.6%")
+    results.append("")
+    results.append("- 핵심 과제:")
+    results.append("  1) 1등급 토양 보전 최우선 - 집단화 양호하므로 절대보전")
+    results.append("  2) 기반시설 수혜 농지 집단화 시급 (812개 패치 통합)")
+    results.append("  3) 1등급 토양 지역에 기반시설 우선 투자")
+    results.append("")
+    results.append("- 실행 전략:")
+    results.append("  → 1등급 토양 452개 패치를 집단화하여 50개 이하로 통합")
+    results.append("  → 기반시설 수혜 농지 교환·분합으로 평균 면적 10ha 이상 확보")
+    results.append("  → 집단화 불가능한 소규모 분산 농지(< 3ha) 해제 검토")
     results.append("")
     results.append("【나주 지역 전략】")
-    results.append("- 현황: 파편화 심각, 우량농지 산재")
-    results.append("- 전략:")
-    results.append("  1) 우량농지 중심 집단화 사업 최우선")
-    results.append("  2) 농지 교환·분합 적극 추진")
-    results.append("  3) 소규모 분산 농지는 해제 검토")
+    results.append("- 현황 분석:")
+    results.append("  • 1등급 토양: 29.0% (우수), 749개 패치로 파편화")
+    results.append("  • 기반시설 수혜: 19.8% (양호), 2,209개 패치로 심각한 파편화")
+    results.append("  • 1등급 농업용지: 37.3% (매우 높음), 평균 63.29ha로 상대적 양호")
+    results.append("")
+    results.append("- 핵심 과제:")
+    results.append("  1) 극심한 파편화 해소가 최우선")
+    results.append("  2) 우량농지 비율이 높아 집단화 효과 극대화 가능")
+    results.append("  3) 1등급 농업용지는 상대적으로 양호 → 이를 기준으로 집단화")
+    results.append("")
+    results.append("- 실행 전략:")
+    results.append("  → 1등급 토양 749개 패치를 100개 이하로 대폭 통합")
+    results.append("  → 기반시설 수혜 농지 2,209개 패치를 300개 이하로 집약")
+    results.append("  → 1등급 농업용지 중심으로 집단화 핵심 구역 설정")
+    results.append("  → 집단화 효과가 낮은 외곽 소규모 농지 해제 검토")
     results.append("")
 
     return "\n".join(results)
