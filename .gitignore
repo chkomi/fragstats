@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+
+# Data files
+*.json
+*.txt
+!FRAGSTATS_결과해석_농지기능평가.txt
+!FRAGSTATS_분석결과_종합보고서.txt
+!infra_class.txt
+!infra_land.txt
+!infra_patch.txt
+!nongeup_class.txt
+!nongeup_land.txt
+!nongeup_patch.txt
+!pibok_class.txt
+!pibok_land.txt
+!pibok_patch_hwasun.txt
+!pibok_patch_naju.txt
+!toyang_class.txt
+!toyang_land.txt
+!toyang_patch.txt
+!엔트로피가중치_평가모델_결과.txt
+!엔트로피가중치법_방법론_설명서.txt
+!종합_평가_결과.txt
