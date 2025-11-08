@@ -68,25 +68,34 @@ The main quantitative outcomes of the analysis are:
 
 | Rank | Target ID | Score |
 | :--: | :--- | :---: |
-| 1 | `naju_nongeup` | **74.08** |
-| 2 | `hwasun_nongeup` | **62.41** |
-| 3 | `hwasun_toyang` | **59.32** |
-| 4 | `naju_toyang` | **56.53** |
-| 5 | `hwasun_infra` | **44.64** |
-| 6 | `naju_infra` | **38.81** |
-| 7 | `hwasun_pibok` | **28.03** |
-| 8 | `naju_pibok` | **23.54** |
+| 1 | `naju_toyang` | **68.80** |
+| 2 | `hwasun_toyang` | **66.82** |
+| 3 | `naju_nongeup` | **51.77** |
+| 4 | `hwasun_nongeup` | **51.16** |
+| 5 | `hwasun_infra` | **39.07** |
+| 6 | `naju_infra` | **34.48** |
+| 7 | `hwasun_pibok` | **26.04** |
+| 8 | `naju_pibok` | **23.90** |
 
-#### Data-Driven Layer Weights:
+#### Data-Driven Layer Weights (Region-Specific):
 
-These weights, calculated from the analysis results, represent the relative importance of each layer in determining the final agricultural value. They are intended for use in GIS weighted overlay analysis.
+These weights, calculated from the analysis results, represent the relative importance of each layer for use in region-specific GIS weighted overlay analysis.
 
+**Naju (나주):**
 | Rank | Layer | Weight |
 | :--: | :--- | :---: |
-| 1 | **Nongeup (농업용도)** | **35.2%** |
-| 2 | **Toyang (토양)** | **29.9%** |
-| 3 | **Infra (기반시설)** | **21.5%** |
-| 4 | **Pibok (토지피복)** | **13.3%** |
+| 1 | **Toyang (토양)** | **38.5%** |
+| 2 | **Nongeup (농업용도)** | **28.9%** |
+| 3 | **Infra (기반시설)** | **19.3%** |
+| 4 | **Pibok (토지피복)** | **13.4%** |
+
+**Hwasun (화순):**
+| Rank | Layer | Weight |
+| :--: | :--- | :---: |
+| 1 | **Toyang (토양)** | **36.5%** |
+| 2 | **Nongeup (농업용도)** | **27.9%** |
+| 3 | **Infra (기반시설)** | **21.3%** |
+| 4 | **Pibok (토지피복)** | **14.2%** |
 
 ---
 

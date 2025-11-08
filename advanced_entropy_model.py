@@ -96,13 +96,15 @@ def aggregate_all_data():
     Aggregates data from class, land, and patch levels for the 8 data points.
     """
     data_points = {}
-    categories = ['infra', 'toyang', 'nongeup', 'pibok']
+    categories = ['infra', 'toyang2', 'nongeup', 'pibok']
     regions = ['hwasun', 'naju']
 
     for region in regions:
         for category in categories:
-            key = f"{region}_{category}"
-            data_points[key] = {'category': category, 'region': region, 'metrics': {}}
+            # Use the base name 'toyang' for dictionary keys and properties for consistency
+            report_category = 'toyang' if category == 'toyang2' else category
+            key = f"{region}_{report_category}"
+            data_points[key] = {'category': report_category, 'region': region, 'metrics': {}}
 
             # 1. Get Class Metrics
             class_file = WORK_DIR / f"{category}_class.txt"
