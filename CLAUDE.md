@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This repository contains FRAGSTATS landscape metrics analysis tools for agricultural land use planning, specifically focused on establishing criteria for agricultural promotion area designation/de-designation in Naju (나주) and Hwasun (화순) regions.
+This repository contains tools for a multi-level landscape metric analysis of agricultural land in Naju (나주) and Hwasun (화순).
+
+The primary goal is to establish objective, data-driven criteria for evaluating Agricultural Promotion Areas. The core of the project is an **advanced entropy weight model** that integrates metrics from three different spatial scales (Class, Land, and Patch) to derive a comprehensive "Agricultural Value" score.
 
 ## Data Structure
 
@@ -12,141 +14,86 @@ This repository contains FRAGSTATS landscape metrics analysis tools for agricult
 FRAGSTATS output files are tab-separated text files organized by:
 - **Categories**: `infra`, `toyang`, `nongeup`, `pibok`
 - **Analysis Levels**:
-  - `*_class.txt` - Class-level metrics (31 indicators)
-  - `*_land.txt` - Landscape-level metrics (19 indicators)
-  - `*_patch.txt` - Patch-level metrics (8 indicators)
-- **Regions**: `naju`, `hwasun` (embedded in LOC field or filename)
-
-Special cases:
-- `pibok` patch data is split into separate files: `pibok_patch_naju.txt` and `pibok_patch_hwasun.txt`
-- Patch files are very large (1-2MB) and should be processed with chunking or streaming
+  - `*_class.txt` - Class-level metrics
+  - `*_land.txt` - Landscape-level metrics
+  - `*_patch.txt` - Patch-level metrics
+- **Regions**: `naju`, `hwasun`
 
 ### Agricultural Suitability Types
-- **infra**: `giban_benefited` (suitable) vs `giban_not_benefited` (unsuitable)
-- **toyang/nongeup/pibok**: `cls_1` (suitable) vs `cls_9` (unsuitable)
+The analysis focuses on the "suitable" land types within each category:
+- **infra**: `giban_benefited`
+- **toyang/nongeup/pibok**: `cls_1`
 
-## Running Analysis
+---
 
-### Primary Command
+## Current Analysis Workflow
+
+The entire analysis, from data aggregation to final report generation, is now handled by a single, comprehensive script.
+
+### **Main Script: `advanced_entropy_model.py`**
+
+This script performs a complete, end-to-end analysis.
+
+#### **Process:**
+
+1.  **Data Aggregation:** The script reads data from all three levels (`class`, `land`, `patch`) for the 8 evaluation targets (2 regions × 4 categories). It unifies 58+ indicators into a single data matrix.
+2.  **Entropy Analysis:** It applies the entropy weight method to the entire data matrix to calculate an objective, data-driven weight for every single indicator.
+3.  **Scoring & Reporting:** Using these weights, it calculates a final comprehensive "Agricultural Value" score for each of the 8 targets and generates a series of detailed reports documenting the process and results.
+
+#### **Running the Analysis:**
+
+To execute the full analysis and regenerate all reports, run:
 ```bash
-python3 analyze_fragstats.py
+python3 advanced_entropy_model.py
 ```
 
-This generates `FRAGSTATS_분석결과_종합보고서.txt` containing:
-1. Class-level analysis with suitable vs unsuitable type comparisons
-2. Landscape-level analysis with regional (Naju vs Hwasun) comparisons
-3. Patch-level descriptive statistics (mean, std, min, max, median)
-4. Comprehensive summary with recommendations for agricultural land designation criteria
+---
 
-### Dependencies
-The script uses **only Python standard library** (no pandas/numpy). This is intentional to avoid dependency issues.
+## Key Outputs & Reports
 
-## Entropy Weight Model
+The analysis generates the following key documents, which are the main results of this project:
 
-A new, objective evaluation model has been introduced to calculate the importance of different landscape metrics.
+-   **`1. ... .md`**: Initial verification reports that identify and explain the critical bug found in the original, now-deprecated analysis script.
+-   **`2. ... .md`**: A summary of the final, corrected analysis results, formatted for easy inclusion in a research paper.
+-   **`3. ... .md`**: The detailed final analysis report. This includes the complete calculation process and the full list of all 58+ indicator weights and their rationales, ensuring full verifiability.
+-   **`4. ... .md`**: Documents outlining the next steps for policy application. This includes a proposal for using the results in a GIS-based weighted overlay analysis and the final data-driven layer weights derived from the model's output.
 
-### Running the Model
-```bash
-python3 entropy_weight_model.py
-```
-This script reads the class-level metrics from `FRAGSTATS_분석결과_종합보고서.txt`, applies the entropy weight method, and generates two key files:
-1.  `엔트로피가중치_평가모델_결과.txt`: Contains the calculated weights for each layer (pibok, nongeup, infra, toyang) and each of the 31 class-level metrics. It also includes the comprehensive scores and 5-tier ratings for each data point (Naju/Hwasun).
-2.  `엔트로피가중치법_방법론_설명서.txt`: A detailed document explaining the theory, calculation steps, and policy application of the entropy weight method.
+---
 
-### Code Architecture
+## Key Results
 
-**`entropy_weight_model.py`**
-- **`load_class_metrics_from_report(report_path)`**: Parses the main analysis report to extract the raw data for the 8 data points (Naju/Hwasun x 4 layers).
-- **`calculate_entropy_weights(data)`**: Implements the 6-step entropy weight calculation process:
-    1.  Normalization of the data matrix.
-    2.  Calculation of entropy for each indicator.
-    3.  Calculation of the degree of dispersion.
-    4.  Calculation of the weight for each indicator.
-    5.  Calculation of comprehensive scores for each data point.
-    6.  Classification into a 5-tier rating system (Absolute Preservation to Priority De-designation).
-- **`save_results(weights, scores, ratings)`**: Saves the final weights, scores, and ratings into `엔트로피가중치_평가모델_결과.txt`.
+The main quantitative outcomes of the analysis are:
 
-This model provides an objective, data-driven method for evaluating agricultural promotion areas, removing subjectivity from the weighting process.
+#### Final "Agricultural Value" Scores:
 
-## Main Analysis Functions
+| Rank | Target ID | Score |
+| :--: | :--- | :---: |
+| 1 | `naju_nongeup` | **74.08** |
+| 2 | `hwasun_nongeup` | **62.41** |
+| 3 | `hwasun_toyang` | **59.32** |
+| 4 | `naju_toyang` | **56.53** |
+| 5 | `hwasun_infra` | **44.64** |
+| 6 | `naju_infra` | **38.81** |
+| 7 | `hwasun_pibok` | **28.03** |
+| 8 | `naju_pibok` | **23.54** |
 
-**`analyze_class_metrics()`**
-- Reads 4 category files (infra, toyang, nongeup, pibok)
-- Outputs metrics for each region/type combination
-- Compares suitable vs unsuitable agricultural types
-- Key metrics: CA, PLAND, NP, PD, LPI, ED, AREA_MN, TCA, CPLAND, CLUMPY, PLADJ, COHESION, AI
+#### Data-Driven Layer Weights:
 
-**`analyze_land_metrics()`**
-- Landscape-level analysis for each category
-- Regional comparisons (Hwasun vs Naju)
-- Key metrics: TA, NP, PD, LPI, ED, TCA, CONTAG, COHESION, DIVISION, MESH, SPLIT, SHDI, SIDI, SHEI, AI
+These weights, calculated from the analysis results, represent the relative importance of each layer in determining the final agricultural value. They are intended for use in GIS weighted overlay analysis.
 
-**`analyze_patch_metrics()`**
-- Processes large patch files with streaming (line-by-line reading)
-- Computes descriptive statistics per region/type
-- Handles pibok's split files separately
-- Key metrics: AREA, PERIM, GYRATE, SHAPE, FRAC, CORE, NCORE, CAI
+| Rank | Layer | Weight |
+| :--: | :--- | :---: |
+| 1 | **Nongeup (농업용도)** | **35.2%** |
+| 2 | **Toyang (토양)** | **29.9%** |
+| 3 | **Infra (기반시설)** | **21.5%** |
+| 4 | **Pibok (토지피복)** | **13.3%** |
 
-**`generate_summary()`**
-- Provides interpretation guidelines for FRAGSTATS indicators
-- Proposes criteria for agricultural land preservation vs de-designation
-- Suggests weighted scoring model for comprehensive evaluation
+---
 
-### Utility Functions
+## Deprecated Scripts
 
-**`read_fragstats_file(file_path)`**
-- Parses tab-separated FRAGSTATS output
-- Returns dict with 'header' and 'data' (list of dicts)
-- Use for small files (class, land levels)
+The following scripts are now superseded by `advanced_entropy_model.py` and should not be used for analysis. They are retained in the repository for historical context regarding the project's evolution and the bug discovery process.
 
-**`safe_float(value)`**
-- Handles 'N/A' values and conversion errors
-- Returns None for non-numeric values
-
-**`calculate_stats(values)`**
-- Computes mean, std, min, max, median
-- Filters out None values automatically
-
-## Important Implementation Notes
-
-### Working Directory
-The script has a hardcoded path in line 13:
-```python
-work_dir = Path("/Users/yunhyungchang/Documents/FRAGSTATS")
-```
-When adapting this script for other systems, update this path accordingly.
-
-### Large File Handling
-Patch files (especially `infra_patch.txt`, `pibok_patch_*.txt`) are too large to load into memory. The code uses:
-```python
-with open(file_path, 'r', encoding='utf-8') as f:
-    for line in f:  # Stream line-by-line
-        # process each patch
-```
-
-### Text Encoding
-All files use UTF-8 encoding. Korean text is extensively used in variable names, comments, and output.
-
-## Key FRAGSTATS Metrics
-
-High-level interpretation for agricultural land evaluation:
-
-**Preservation Priority Indicators:**
-- High PLAND (landscape percentage)
-- High LPI (large connected patches)
-- High CLUMPY (>0.85), AI (>90), COHESION (>98) - concentrated distribution
-- Low NP, PD, ED - minimal fragmentation
-
-**De-designation Consideration Indicators:**
-- Low PLAND (small landscape share)
-- High NP, PD, ED - high fragmentation
-- Low CLUMPY (<0.8), AI (<85) - dispersed distribution
-- Small AREA_MN - tiny average patch size
-
-## Output Format
-
-The analysis report uses Korean text with structured sections:
-- Fixed-width column formatting for numeric tables
-- 80-character section dividers
-- Difference values and percentage changes for comparisons
-- Summary recommendations at the end
+-   `analyze_fragstats.py`
+-   `entropy_weight_model.py`
+-   `verify_data.py`, `recalculate_entropy.py`
