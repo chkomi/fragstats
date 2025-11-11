@@ -9,7 +9,10 @@ import math
 from pathlib import Path
 from datetime import datetime
 
-work_dir = Path("/Users/yunhyungchang/Documents/FRAGSTATS")
+# 프로젝트 루트 디렉토리 설정 (src/02_analysis_models/ 에서 3단계 상위)
+WORK_DIR = Path(__file__).parent.parent.parent.resolve()
+DATA_DIR = WORK_DIR / "data" / "01_raw_fragstats"
+RESULTS_DIR = WORK_DIR / "results" / "01_initial_outputs"
 
 def safe_float(value):
     """안전하게 float로 변환"""
@@ -119,7 +122,13 @@ def extract_class_data():
     all_data = []
 
     for category in categories:
-        file_path = work_dir / f"{category}_class.txt"
+        # 'toyang'의 경우 'toyang3' 파일을 읽도록 처리 (파일이 없을 경우 대비)
+        file_prefix = 'toyang3' if category == 'toyang' else category
+        file_path = DATA_DIR / f"{file_prefix}_class.txt"
+        
+        if not file_path.exists() and category == 'toyang': # toyang3가 없을 경우 원래 toyang 시도
+             file_path = DATA_DIR / f"{category}_class.txt"
+
         file_data = read_fragstats_file(file_path)
 
         if file_data:
@@ -257,7 +266,12 @@ def calculate_layer_weights():
 
     # 각 레이어별 대표 지표 값 추출
     for category in categories:
-        file_path = work_dir / f"{category}_class.txt"
+        file_prefix = 'toyang3' if category == 'toyang' else category
+        file_path = DATA_DIR / f"{file_prefix}_class.txt"
+        
+        if not file_path.exists() and category == 'toyang':
+             file_path = DATA_DIR / f"{category}_class.txt"
+
         file_data = read_fragstats_file(file_path)
 
         if file_data:
@@ -595,7 +609,8 @@ def main():
     report, scores, indicator_weights, layer_weights = generate_evaluation_model()
 
     # 결과 저장
-    output_file = work_dir / "엔트로피가중치_평가모델_결과.txt"
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    output_file = RESULTS_DIR / "엔트로피가중치_평가모델_결과_old_model.txt"
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(report)
 
