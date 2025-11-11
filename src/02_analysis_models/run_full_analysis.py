@@ -1,3 +1,4 @@
+
 import numpy as np
 import json
 import math
@@ -12,7 +13,7 @@ import pandas as pd
 WORK_DIR = Path(__file__).parent.parent.parent.resolve()
 # 분석 결과를 저장할 새 폴더 이름 정의
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-OUTPUT_DIR = WORK_DIR / "results" / "02_toyang3_reanalysis" / f"analysis_toyang3_{timestamp}"
+OUTPUT_DIR = WORK_DIR / "results" / "03_regional_weights_analysis" / f"analysis_{timestamp}"
 
 # 분석할 카테고리 및 지역 목록
 CATEGORIES = ['infra', 'nongeup', 'pibok', 'toyang']
@@ -205,59 +206,87 @@ def calculate_weights(df):
 # --- 4. 종합 점수 및 레이어 가중치 산정 (Scoring and Layer Weights) ---
 def calculate_scores_and_layer_weights(normalized_df, indicator_weights):
     """
-    종합 점수와 최종 레이어 가중치를 계산합니다.
+    종합 점수와 지역별 최종 레이어 가중치를 계산합니다.
     """
-    print("Step 3: Calculating comprehensive scores and final layer weights...")
-    if normalized_df.empty or not indicator_weights: return pd.Series(dtype='float64'), {}
+    print("Step 3: Calculating comprehensive scores and region-specific layer weights...")
+    if normalized_df.empty or not indicator_weights:
+        return pd.Series(dtype='float64'), {}, {}
 
+    # 1. 종합 점수 계산
     weights_series = pd.Series({ind: w_info['weight'] for ind, w_info in indicator_weights.items()})
     scores = (normalized_df * weights_series).sum(axis=1) * 100
     
-    scores_df = scores.to_frame(name='score')
-    scores_df['category'] = [idx.split('_')[1] for idx in scores_df.index]
-    layer_avg_scores = scores_df.groupby('category')['score'].mean()
-    
-    total_avg_score = layer_avg_scores.sum()
-    layer_weights = (layer_avg_scores / total_avg_score).to_dict() if total_avg_score > 0 else {layer: 1.0 / len(layer_avg_scores) for layer in layer_avg_scores.index}
+    # 2. 지역별 최종 레이어 가중치 계산
+    naju_scores = scores[scores.index.str.startswith('naju')]
+    hwasun_scores = scores[scores.index.str.startswith('hwasun')]
+
+    def get_regional_weights(regional_scores):
+        if regional_scores.empty:
+            return {}
+        total_score = regional_scores.sum()
+        if total_score == 0:
+            return {idx.split('_')[1]: 1.0 / len(regional_scores) for idx in regional_scores.index}
+        
+        regional_weights = (regional_scores / total_score).to_dict()
+        # Clean up keys from 'naju_infra' to 'infra'
+        return {k.split('_')[1]: v for k, v in regional_weights.items()}
+
+    naju_layer_weights = get_regional_weights(naju_scores)
+    hwasun_layer_weights = get_regional_weights(hwasun_scores)
 
     print("Step 3 finished: Scores and layer weights calculated.")
-    return scores, layer_weights
+    return scores, naju_layer_weights, hwasun_layer_weights
 
 # --- 5. 결과 생성 및 저장 (Report Generation) ---
-def generate_report(indicator_weights, scores, layer_weights):
+def generate_report(indicator_weights, scores, naju_layer_weights, hwasun_layer_weights):
     """
     분석 결과를 종합하여 보고서 파일을 생성합니다.
     """
     print(f"Step 4: Generating report in {OUTPUT_DIR}...")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     
-    report_md_path = OUTPUT_DIR / "종합_분석_보고서.md"
-    layer_weights_path = OUTPUT_DIR / "레이어별_가중치.csv"
+    report_md_path = OUTPUT_DIR / "종합_분석_보고서_지역별_가중치.md"
+    naju_layer_weights_path = OUTPUT_DIR / "레이어별_가중치_나주.csv"
+    hwasun_layer_weights_path = OUTPUT_DIR / "레이어별_가중치_화순.csv"
     scores_path = OUTPUT_DIR / "평가대상별_종합점수.csv"
     indicator_weights_path = OUTPUT_DIR / "지표별_가중치.csv"
 
     with open(report_md_path, 'w', encoding='utf-8') as f:
-        f.write(f"# 종합 분석 보고서 (toyang3 데이터 반영)\n")
+        f.write(f"# 종합 분석 보고서 (지역별 가중치 산정)\n")
         f.write(f"분석 일시: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
-        f.write("## 1. 최종 레이어 가중치\n\n| 순위 | 레이어 | 최종 가중치 | 백분율 (%) |\n|:--:|:---|:---:|:---:|")
-        sorted_layers = sorted(layer_weights.items(), key=lambda item: item[1], reverse=True)
-        for i, (layer, weight) in enumerate(sorted_layers, 1):
+        f.write("이 보고서는 나주와 화순 지역의 레이어별 가중치를 별도로 산정한 결과입니다.\n\n")
+
+        # 1. 나주 최종 레이어 가중치
+        f.write("## 1. 나주(Naju) 지역 최종 레이어 가중치\n\n| 순위 | 레이어 | 최종 가중치 | 백분율 (%) |\n|:--:|:---|:---:|:---:|")
+        sorted_layers_naju = sorted(naju_layer_weights.items(), key=lambda item: item[1], reverse=True)
+        for i, (layer, weight) in enumerate(sorted_layers_naju, 1):
+            f.write(f"| {i} | {layer.capitalize()} | {weight:.4f} | {weight*100:.2f} |\n")
+        f.write("\n")
+        
+        # 2. 화순 최종 레이어 가중치
+        f.write("## 2. 화순(Hwasun) 지역 최종 레이어 가중치\n\n| 순위 | 레이어 | 최종 가중치 | 백분율 (%) |\n|:--:|:---|:---:|:---:|")
+        sorted_layers_hwasun = sorted(hwasun_layer_weights.items(), key=lambda item: item[1], reverse=True)
+        for i, (layer, weight) in enumerate(sorted_layers_hwasun, 1):
             f.write(f"| {i} | {layer.capitalize()} | {weight:.4f} | {weight*100:.2f} |\n")
         f.write("\n")
 
-        f.write("## 2. 평가 대상별 종합 점수\n\n| 순위 | 평가 대상 ID | 종합 점수 (100점 만점) |\n|:--:|:---|:---:|")
+        f.write("---\n\n")
+
+        f.write("## 3. 평가 대상별 종합 점수 (공통)\n\n| 순위 | 평가 대상 ID | 종합 점수 (100점 만점) |\n|:--:|:---|:---:|")
         sorted_scores = scores.sort_values(ascending=False)
         for i, (target_id, score) in enumerate(sorted_scores.items(), 1):
             f.write(f"| {i} | `{target_id}` | {score:.2f} |\n")
         f.write("\n")
 
-        f.write("## 3. 지표별 가중치 (58개)\n\n| 순위 | 지표명 | 최종 가중치 (W) | 엔트로피 (E) | 분산도 (D) |\n|:--:|:---|:---:|:---:|:---:|")
+        f.write("## 4. 지표별 가중치 (58개, 공통)\n\n| 순위 | 지표명 | 최종 가중치 (W) | 엔트로피 (E) | 분산도 (D) |\n|:--:|:---|:---:|:---:|:---:|")
         sorted_indicators = sorted(indicator_weights.items(), key=lambda item: item[1]['weight'], reverse=True)
         for i, (name, w_info) in enumerate(sorted_indicators, 1):
             f.write(f"| {i} | `{name}` | {w_info['weight']:.4f} | {w_info['entropy']:.4f} | {w_info['diversity']:.4f} |\n")
         f.write("\n")
 
-    pd.DataFrame.from_dict(layer_weights, orient='index', columns=['weight']).sort_values('weight', ascending=False).to_csv(layer_weights_path, encoding='utf-8-sig')
+    # CSV 파일 저장
+    pd.DataFrame.from_dict(naju_layer_weights, orient='index', columns=['weight']).sort_values('weight', ascending=False).to_csv(naju_layer_weights_path, encoding='utf-8-sig')
+    pd.DataFrame.from_dict(hwasun_layer_weights, orient='index', columns=['weight']).sort_values('weight', ascending=False).to_csv(hwasun_layer_weights_path, encoding='utf-8-sig')
     scores.sort_values(ascending=False).to_csv(scores_path, encoding='utf-8-sig')
     pd.DataFrame.from_dict(indicator_weights, orient='index').sort_values('weight', ascending=False).to_csv(indicator_weights_path, encoding='utf-8-sig')
 
@@ -274,8 +303,8 @@ def main():
         print("Execution stopped because no data could be aggregated.")
         return
     indicator_weights, normalized_matrix = calculate_weights(data_matrix)
-    scores, layer_weights = calculate_scores_and_layer_weights(normalized_matrix, indicator_weights)
-    generate_report(indicator_weights, scores, layer_weights)
+    scores, naju_layer_weights, hwasun_layer_weights = calculate_scores_and_layer_weights(normalized_matrix, indicator_weights)
+    generate_report(indicator_weights, scores, naju_layer_weights, hwasun_layer_weights)
     print(f"\nAnalysis pipeline finished successfully. Results are in:\n{OUTPUT_DIR}")
 
 if __name__ == "__main__":
