@@ -1,0 +1,6 @@
+Indicator,Weight,Description
+PD,0.451,"Density of patches"
+NP,0.298,"Number of patches"
+LPI,0.155,"Largest Patch Index"
+CA,0.056,"Class Area"
+PLAND,0.040,"Percentage of Landscape"

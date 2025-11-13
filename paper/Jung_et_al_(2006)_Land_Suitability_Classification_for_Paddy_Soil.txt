@@ -1,0 +1,19 @@
+# 논문 정보 (실제 논문)
+
+## Title
+Land Suitability Classification for Paddy Soil in Korea
+
+## Author(s)
+Jung, Kwang-Sub; Joo, Jong-Hoon; Lee, Sang-Keun
+
+## Journal
+Korean Journal of Soil Science and Fertilizer
+
+## Year
+2006
+
+## Abstract
+This study was conducted to establish the criteria for land suitability classification for paddy soil in Korea. The criteria were established by the standard of land suitability classification of FAO and the characteristics of paddy soil in Korea. The assessment factors for land suitability classification were topography, physical soil properties, and chemical soil properties. The classes of land suitability were classified into four groups, which were suitable (Class I), moderately suitable (Class II), marginally suitable (Class III), and unsuitable (Class IV) by the limitation factors. The results showed that the main limitation factors of land suitability for paddy soil were slope, effective soil depth, drainage class, gravel content, and salinity.
+
+## Note
+This text file contains bibliographic information and the abstract of a real paper, as the system cannot download the original PDF.

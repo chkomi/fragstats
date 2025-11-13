@@ -1,0 +1,17 @@
+Layer,Class,Region,Quality_Score
+nongeup,cls_1,hwasun,0.602
+nongeup,cls_9,hwasun,0.611
+nongeup,cls_1,naju,0.552
+nongeup,cls_9,naju,0.583
+toyang,cls_1,hwasun,0.568
+toyang,cls_9,hwasun,0.601
+toyang,cls_1,naju,0.569
+toyang,cls_9,naju,0.578
+infra,cls_1,hwasun,0.653
+infra,cls_9,hwasun,0.594
+infra,cls_1,naju,0.444
+infra,cls_9,naju,0.440
+pibok,cls_1,hwasun,0.352
+pibok,cls_9,hwasun,0.494
+pibok,cls_1,naju,0.178
+pibok,cls_9,naju,0.058

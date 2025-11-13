@@ -1,0 +1,5 @@
+Group,Weight,Description
+Aggregation/Isolation,0.488,"How aggregated or isolated patches are"
+Area/Density,0.297,"Basic characteristics of area, density, and fragmentation"
+Core Area,0.125,"Characteristics of stable core areas"
+Shape,0.090,"Complexity of patch shape"

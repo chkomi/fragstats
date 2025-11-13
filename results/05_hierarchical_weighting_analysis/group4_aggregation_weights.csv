@@ -1,0 +1,4 @@
+Indicator,Weight,Description
+AI,0.695,"Aggregation Index"
+COHESION,0.215,"Patch Cohesion Index"
+CLUMPY,0.090,"Clumpiness Index"

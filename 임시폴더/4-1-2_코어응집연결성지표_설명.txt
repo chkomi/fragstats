@@ -1,0 +1,15 @@
+﻿코어·응집·연결성 지표(14개) — 본 설명은 4-1-2 표의 실제 값(10 m, Class 수준)에 근거하여 나주/화순 각각의 핵심면적, 응집, 연결 구조를 문단으로 정리한 것이다.
+
+[나주(Naju)]
+회전반경(GYRATE_MN/AM)은 Nongeup(GYRATE_MN 205.1 m; GYRATE_AM 2,720.7 m)과 Toyang(GYRATE_MN 190.3 m; GYRATE_AM 849.4 m)이 Infra·Pibok 대비 크게 나타나 공간 확장성이 우수하였다.
+총 코어 면적(TCA)/비율(CPLAND)은 Nongeup(TCA 20,398.25 ha; CPLAND 33.79%)가 가장 크고, Toyang(TCA 14,629.99 ha; CPLAND 24.15%)이 뒤를 이었다.
+핵심영역 분절도(NDCA/DCAD)는 Pibok(NDCA 18,666개; DCAD 30.81)이 높아 작은 핵심영역이 다수 분산되어 있고, Nongeup은 NDCA 596, DCAD 0.99로 낮아 대형 코어 위주 구조(CORE_MN 57.30 ha)를 보였다.
+평균 코어 면적 지수(CAI_MN)는 Toyang/Nongeup에서 각각 63.01% / 57.84%로 높게 나타났다.
+응집·연결 지표에서 CLUMPY/PLADJ는 Nongeup(CLUMPY 0.947; PLADJ 96.63%)와 Toyang(CLUMPY 0.916; PLADJ 93.99%)이 높았고, COHESION/AI 역시 Nongeup(COHESION 99.78%; AI 96.69%)와 Toyang(COHESION 99.16%; AI 94.06%)이 상대적으로 우수하였다.
+
+[화순(Hwasun)]
+회전반경(GYRATE_MN/AM)은 Nongeup(GYRATE_MN 232.8 m; GYRATE_AM 1,019.4 m)과 Toyang(GYRATE_MN 279.6 m; GYRATE_AM 1,316.3 m)이 Infra·Pibok 대비 크게 나타나 공간 확장성이 우수하였다.
+총 코어 면적(TCA)/비율(CPLAND)은 Nongeup(TCA 10,666.23 ha; CPLAND 13.53%)가 가장 크고, Toyang(TCA 16,368.86 ha; CPLAND 20.77%)이 뒤를 이었다.
+핵심영역 분절도(NDCA/DCAD)는 Pibok(NDCA 15,618개; DCAD 19.82)이 높아 작은 핵심영역이 다수 분산되어 있고, Nongeup은 NDCA 691, DCAD 0.88로 낮아 대형 코어 위주 구조(CORE_MN 26.34 ha)를 보였다.
+평균 코어 면적 지수(CAI_MN)는 Toyang/Nongeup에서 각각 59.33% / 65.28%로 높게 나타났다.
+응집·연결 지표에서 CLUMPY/PLADJ는 Nongeup(CLUMPY 0.947; PLADJ 95.47%)와 Toyang(CLUMPY 0.907; PLADJ 93.05%)이 높았고, COHESION/AI 역시 Nongeup(COHESION 99.18%; AI 95.55%)와 Toyang(COHESION 99.45%; AI 93.12%)이 상대적으로 우수하였다.

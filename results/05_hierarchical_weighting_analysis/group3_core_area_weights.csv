@@ -1,0 +1,4 @@
+Indicator,Weight,Description
+TCA,0.521,"Total Core Area"
+CPLAND,0.376,"Core Area Percentage of Landscape"
+CORE_MN,0.103,"Mean Core Area per Patch"
