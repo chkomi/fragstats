@@ -1,0 +1,42 @@
+참고 문헌
+
+국내문헌
+1. 김수석, 박미정, 김정욱. 2011. "농지의 체계적 관리를 위한 농업진흥지역 지정운영 개선방안." 한국농촌경제연구원.
+2. 김영훈, 김태균, 박성재. 2015. "영농여건불리농지 지정제도 운영실태 및 개선방향." 한국농촌경제연구원.
+3. 농림축산식품부. 2020. 농지법 시행령. https://www.law.go.kr
+4. 농림축산식품부. 2024. 『2023년 농림축산식품 주요통계』. 농림축산식품부.
+5. 농어업인 삶의 질 향상 및 농어촌지역 개발촉진에 관한 특별법. 법률 제19520호 (2023.8.8., 타법개정). https://www.law.go.kr
+6. 농어업인 삶의 질 향상 및 농어촌지역 개발촉진에 관한 특별법 시행령. 대통령령 제33950호 (2023.12.12., 일부개정). https://www.law.go.kr
+7. 농지법. 법률 제17000호 (2020). https://elaw.klri.re.kr
+8. 농촌진흥청. 2023. 『정밀토양도 제작 및 활용 매뉴얼』. 농촌진흥청 국립농업과학원.
+9. 박문호, 김창길, 정학균. 2011. "농업농촌의 가치 확산과 새로운 농정패러다임 구축." 한국농촌경제연구원.
+10. 박석두, 김홍상, 김태곤. 2011. "농지제도의 개선을 통한 농업경쟁력 강화 방안." 한국농촌경제연구원.
+11. 손학기, 김원주, 박종화. 2000. "GIS 공간유형분석 모형을 이용한 경관 규모 생태계의 평가기법." 대한공간정보학회지 8(2): 233-241.
+12. 송석호. 2024. "농업가뭄대응사업 평가를 위한 엔트로피 가중치 기반 기후영향지표 개발." 전남대학교 대학원 석사학위논문.
+13. 송미령, 김광선, 권인혜. 2009. "농업농촌분야 포괄보조금제도 개선방안 연구." 한국농촌경제연구원.
+14. 엄대호, 김경덕, 이만형. 2011. "FRAGSTATS를 활용한 경관다양성의 시공간적 분석." 한국환경복원기술학회지 14(6): 295-307.
+15. 윤종열, 송석호, 윤동균. 2023. "엔트로피를 이용한 복합위험지수의 가중치 산정." 한국수자원학회논문집 56(11): 751-763.
+16. 이광석, 남대희, 김정훈. 2012. "농지이용계획의 합리적 책정을 위한 농지적성 평가기법의 개발." 한국지형공간정보학회지 20(4): 97-107.
+17. 이용만, 김홍상, 박시현. 2014. "우량농지 보전을 위한 정책프로그램 개발." 한국농촌경제연구원.
+18. 정기환, 김정호, 박석두. 2002. "우리나라 농업진흥지역 지정관리제도의 개선방안에 관한 연구." 한국농촌경제연구원.
+19. 정재호, 이중우, 김기동. 2010. "FRAGSTATS 모형을 이용한 도암댐 유역의 경관 분석." 한국환경복원기술학회지 13(6): 69-79.
+20. 정현철, 김태곤, 윤성호. 2022. "농업진흥지역 밖 농지의 보전 적지 분석: 환경성과 생산성 중심으로." 한국지역개발학회지 34(2): 1-24.
+21. 통계청. 2020. 『2020 농림어업총조사』. 통계청. https://kostat.go.kr
+22. 통계청. 2023. 『농지면적조사』. 통계청.
+23. 통계청. 2024. 『2023 농림어업조사』. 통계청.
+24. 한국농어촌공사. 2023. 『농업생산기반정비사업 통계연보』. 한국농어촌공사.
+25. 한국농어촌공사. 2024. 『2023년 농업생산기반시설 현황』. 한국농어촌공사.
+26. 황의식, 김배성, 박주영. 2007. "휴경농지의 실태와 정책방향." 한국농촌경제연구원.
+
+
+해외문헌
+1. Al-Abadi, A. M. (2016). Spatial mapping of groundwater potential using entropy weighted linear aggregate novel approach and GIS. Arabian Journal for Science and Engineering, 41, 1379-1389.
+2. Baker, W. L., & Cai, Y. (1992). The role programs for multiscale analysis of landscape structure using the GRASS geographical information system. Landscape Ecology, 7, 291-302.
+3. Cushman, S. A., McGarigal, K., & Neel, M. C. (2008). Parsimony in landscape metrics: Strength, universality, and consistency. Ecological Monographs, 78(4), 535-565.
+4. Franzen, N. (2010). Agricultural Zoning and Farmland Protection. In The Farmland Protection Handbook (pp. 89-112). American Farmland Trust.
+5. Malczewski, J. (2006). GIS-based multicriteria decision analysis: A survey of the literature. International Journal of Geographical Information Science, 20(7), 703-726.
+6. McGarigal, K., & Marks, B. J. (1995). FRAGSTATS: Spatial pattern analysis program for quantifying landscape structure. USDA Forest Service General Technical Report PNW-GTR-351.
+7. McGarigal, K., Cushman, S. A., & Ene, E. (2023). FRAGSTATS v4: Spatial Pattern Analysis Program for Categorical Maps. Computer software program produced by the authors. University of Massachusetts, Amherst. Available at: https://www.fragstats.org
+8. Natural Resources Conservation Service. (2015). National Agricultural Land Evaluation and Site Assessment (LESA) Handbook. United States Department of Agriculture.
+9. OECD. (2001). Multifunctionality: Towards an Analytical Framework. Organisation for Economic Co-operation and Development, Paris.
+10. Uuemaa, E., Mander, Ü., & Marja, R. (2013). Trends in the use of landscape spatial metrics as landscape indicators: A review. Ecological Indicators, 28, 100-106.

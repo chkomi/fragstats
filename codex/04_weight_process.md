@@ -1,0 +1,12 @@
+﻿# 가중치 산출 과정 (계층적 엔트로피 분석)
+- 입력: 2개 지역×4개 레이어(infra, pibok, nongeup, toyang)×2개 클래스(cls_1, cls_9)의 FRAGSTATS 클래스 지표 30개(총 16개 분석 단위).
+- 방향성 설정: 면적·집적성 계열(CA, PLAND, LPI, AREA_MN/AM/MD, TCA, CORE_MN 등)은 값이 클수록 우수(positive), 분절·불규칙 계열(NP, PD, TE, ED, FRAC, PARA, NDCA, DCAD 등)은 값이 작을수록 우수(negative).
+- Step 1 정규화: 지표 방향을 반영해 min-max 정규화. positive → (x-min)/(max-min), negative → 1 - (x-min)/(max-min).
+- Step 2 비율 계산: 각 지표 j에서 관측치 i의 비율 P_ij = X_ij / sum_i(X_ij).
+- Step 3 엔트로피: E_j = -k * sum_i(P_ij * ln P_ij), k = 1/ln(n) (n=관측치 수). 분산이 클수록 E_j가 낮음.
+- Step 4 효용도: D_j = 1 - E_j. 정보량이 많을수록 D_j가 커짐.
+- Step 5 지표 가중치: W_indicator_j = D_j / sum(D_j) (그룹별 합=1). 여기까지가 Level 1.
+- Step 6 그룹 대표 점수: 그룹별로 정규화값 × 지표 가중치를 합산해 cls_1, cls_9 점수를 계산(Level 2).
+- Step 7 변별력: 동일 레이어 내에서 그룹 점수 차이를 abs(cls1 - cls9)로 계산하고, 네 그룹 차이를 합산해 레이어별 총 변별력을 구함(Level 3).
+- Step 8 레이어 가중치: W_layer = 변별력 / sum(변별력)으로 표준화(Level 4). 네 레이어 가중치 합은 1.
+- 검증: 결과 파일(01_group_indicator_weights.csv, 02_group_representative_scores.csv, 03_discriminability_details.csv, 04_final_layer_weights.csv)로 합계=1 여부와 수작업 재계산(오차<1e-10)을 확인.
